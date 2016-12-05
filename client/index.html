@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Stock-Watch</title>
+    <link rel="stylesheet" href="css/index.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+    
+    
+  </head>
+  <body>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    
+    
+    <div class='header'>
+      <div class='position'>
+        <img id='img' src='img/Logo.png'><h2>Stock-Watch</h2>
+      </div>
+    </div>
+    <div class='container'>
+      <div id='chart'>
+      </div>
+      <div class='options'>
+        <div class='add'><center>
+          <input type='text' id='input' placeholder='enter symbol to compare'><button id='enter'>enter</button>
+          <p id='error'></p>
+          </center>
+        </div>
+        <div id="list">
+
+        </div>
+      </div>
+    </div>
+    
+    <center>
+      <p class='footer'>Jennie P. | <a target='_blank' href=''>Github</a></p>
+    </center>
+  </body>
+  
+  
+</html>
