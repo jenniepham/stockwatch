@@ -14,7 +14,7 @@ app.use(favicon(__dirname + '/client/favicon.ico'));
 var yahooFinance = require('yahoo-finance');
 
 var symbols =  ['MSFT', 'AAPL'];
-var dataPoint = [];
+var dataPoint;
 var valid;
 
 function validOrNot(a){
@@ -27,13 +27,23 @@ function addTicker(ticker){
   symbols.push(ticker);
 }
 
+function removeTicker(ticker){
+  var index = symbols.indexOf(ticker);
+  symbols.splice(index,1);
+}
+
 
 io.on('connection', function(client){
-  
+  addData(symbols);
   console.log("Client connected");
-  var tickerData = addData(symbols);
-  client.emit('make', {names:symbols, data: tickerData});
-  console.log(tickerData);
+  client.emit('loading');
+  
+  setTimeout(function(){
+    client.emit('make', {names:symbols, data: dataPoint});
+    
+  },1000);  
+  
+  
 
   
   client.on('newTicker', function(data){
@@ -42,14 +52,28 @@ io.on('connection', function(client){
     data = data.toString();
     console.log('ticker received: ' + data);
     
+    var index = symbols.indexOf(data);
+    
+    if (index !== -1){
+      client.emit('exist');
+    }
+    
+    else{
     checkTicker(data);
     setTimeout(function(){
        
        if (valid){
          addTicker(data);
+         addData(symbols);
+         client.emit('loading');
          console.log('new array: ' + symbols);
-         client.emit('make', {names:symbols, data: addData(symbols)});
-         client.broadcast.emit('make', {names:symbols, data: addData(symbols)});
+         
+         setTimeout(function(){
+         client.emit('make', {names:symbols, data: dataPoint});
+         client.broadcast.emit('make', {names:symbols, data: dataPoint}); 
+           
+         },1500 + (300*symbols.length));
+         
        }
        
        else if (!valid) {
@@ -60,14 +84,29 @@ io.on('connection', function(client){
        
        
       
-    },100);
+    },200);
    
-    
+    }
     
     
  
 
    
+  });
+  
+  client.on('remove', function(data){
+    console.log("Removing : " + data);
+    removeTicker(data);
+    addData(symbols);
+    client.emit('loading');
+    console.log("New array:" + symbols);
+    
+    setTimeout(function(){
+         client.emit('make', {names:symbols, data: dataPoint});
+         client.broadcast.emit('make', {names:symbols, data: dataPoint}); 
+           
+         },1500  + (300*symbols.length));
+    
   });
   
   
@@ -145,7 +184,7 @@ var addData = function(tick){
    });
    
    data.push({name:tick[i], data:daily});
-   return data;
+   dataPoint = data;
  }
  
 

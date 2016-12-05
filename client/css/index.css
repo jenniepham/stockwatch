@@ -62,6 +62,7 @@ h2{
 input{
     border:none;
     height: 25px;
+    width: 200px;
     outline-color: #f4428f;
 }
 
@@ -105,12 +106,47 @@ a, a:hover, a:focus, a:active{
 }
 
 .ticker{
-    margin: 0px auto;
     line-height: 30px;
     height: 30px;
-    width: 60%;
+    width: 250px;
     margin-bottom: 5px;
     background-color: #333;
     color: #FFF;
-    border-left: solid 6px #333;
+    float:left;
+    text-align: center;
 }
+
+#loading{
+    z-index: 1;
+    transform: translate(-240px, 320px);
+    
+}
+
+.remove{
+    float: left;
+    background:none;
+    border:none;
+    height: 30px;
+    width: 20px;
+}
+
+.remove:hover{
+    color: #ff8eb6;
+    cursor:pointer;
+    cursor: hand;
+}
+
+.remove:focus{
+    outline: none;
+}
+
+.remove:active{
+    color: #f4426b;
+}
+
+
+#list{
+    margin-left: 25px;
+    
+}
+
