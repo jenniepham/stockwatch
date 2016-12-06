@@ -15,16 +15,17 @@ var yahooFinance = require('yahoo-finance');
 var redis = require('redis');
 var redisClient = redis.createClient(process.env.REDIS_URL);
 
-var symbols =  [];
+var symbols =  ['AAPL'];
 var dataPoint;
 var valid;
 
 storeSymbols(symbols);
 
 var storeSymbols = function(sym){
-  
 
- redisClient.lpush('symbols', sym, function(err, response){
+var symbol = JSON.stringify({symbol: sym});  
+
+ redisClient.lpush('symbols', symbol, function(err, response){
    if (err) {console.log(err);}
    redisClient.ltrim('symbols', 0,0);
    
@@ -32,17 +33,6 @@ var storeSymbols = function(sym){
   
 };
 
-var loadSymbols = function(){
-  
-  redisClient.lrange('messages',0, 0 , function(err,messages){
-    
-    if (err){console.log(err);}
-    
-    return messages[0];
-    
-  });
-  
-};
 
 
 function validOrNot(a){
