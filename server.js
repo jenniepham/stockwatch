@@ -19,7 +19,6 @@ var symbols =  ['AAPL'];
 var dataPoint;
 var valid;
 
-storeSymbols(symbols);
 
 var storeSymbols = function(sym){
 
