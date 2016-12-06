@@ -12,25 +12,11 @@ app.use(express.static('client'));
 var favicon  = require('serve-favicon');
 app.use(favicon(__dirname + '/client/favicon.ico'));
 var yahooFinance = require('yahoo-finance');
-var redis = require('redis');
-var redisClient = redis.createClient(process.env.REDIS_URL);
+
 
 var symbols =  ['AAPL'];
 var dataPoint;
 var valid;
-
-
-var storeSymbols = function(sym){
-
-var symbol = JSON.stringify({symbol: sym});  
-
- redisClient.lpush('symbols', symbol, function(err, response){
-   if (err) {console.log(err);}
-   redisClient.ltrim('symbols', 0,0);
-   
- });
-  
-};
 
 
 
@@ -58,7 +44,7 @@ io.on('connection', function(client){
   setTimeout(function(){
     client.emit('make', {names:symbols, data: dataPoint});
     
-  },1000);  
+  },1000 + (300*symbols.length));  
   
   
 
