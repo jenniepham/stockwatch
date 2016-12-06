@@ -87,7 +87,7 @@ io.on('connection', function(client){
        
        
       
-    },200);
+    },300);
    
     }
     
@@ -100,7 +100,12 @@ io.on('connection', function(client){
   client.on('remove', function(data){
     console.log("Removing : " + data);
     removeTicker(data);
+    if (symbols.length > 0){
     addData(symbols);
+    }
+    else if(symbols.length == 0){
+      dataPoint = [];
+    }
     client.emit('loading');
     console.log("New array:" + symbols);
     
