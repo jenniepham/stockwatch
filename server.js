@@ -113,7 +113,7 @@ io.on('connection', function(client){
          client.emit('make', {names:symbols, data: dataPoint});
          client.broadcast.emit('make', {names:symbols, data: dataPoint}); 
            
-         },1500  + (300*symbols.length));
+         },1500  + (500*symbols.length));
     
   });
   
