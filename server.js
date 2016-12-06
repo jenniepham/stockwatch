@@ -12,10 +12,38 @@ app.use(express.static('client'));
 var favicon  = require('serve-favicon');
 app.use(favicon(__dirname + '/client/favicon.ico'));
 var yahooFinance = require('yahoo-finance');
+var redis = require('redis');
+var redisClient = redis.createClient(process.env.REDIS_URL);
 
-var symbols =  ['MSFT', 'AAPL'];
+var symbols =  [];
 var dataPoint;
 var valid;
+
+storeSymbols(symbols);
+
+var storeSymbols = function(sym){
+  
+
+ redisClient.lpush('symbols', sym, function(err, response){
+   if (err) {console.log(err);}
+   redisClient.ltrim('symbols', 0,0);
+   
+ });
+  
+};
+
+var loadSymbols = function(){
+  
+  redisClient.lrange('messages',0, 0 , function(err,messages){
+    
+    if (err){console.log(err);}
+    
+    return messages[0];
+    
+  });
+  
+};
+
 
 function validOrNot(a){
   
