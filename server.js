@@ -37,14 +37,18 @@ function removeTicker(ticker){
 
 
 io.on('connection', function(client){
-  addData(symbols);
+  
   console.log("Client connected");
   client.emit('loading');
   
-  setTimeout(function(){
-    client.emit('make', {names:symbols, data: dataPoint});
+  function delay(req,res,next){
+    addData(symbols);
+    next();
+  }
+  
+  client.emit('make', {names:symbols, data: dataPoint});
     
-  },1000 + (300*symbols.length));  
+  
   
   
 
